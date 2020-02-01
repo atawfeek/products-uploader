@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Products.Commands\Products.Commands.csproj" />
     <ProjectReference Include="..\Products.Dto\Products.Dto.csproj" />
   </ItemGroup>
 

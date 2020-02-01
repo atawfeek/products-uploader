@@ -32,8 +32,11 @@ namespace Products.Api
             //Register http context in DI container to be injected in constructors upnon need.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            //Register MediatR
+            //Register MediatR handler
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
+            //Register MediatR handler(s) located in our specific project
+            var assembly = AppDomain.CurrentDomain.Load("Products.Commands");
+            services.AddMediatR(assembly);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
