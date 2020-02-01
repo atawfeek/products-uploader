@@ -10,7 +10,6 @@ namespace Products.Dto.Dtos
     /// </summary>
     public class InputFileDto
     {
-        public string FileName { get; set; }
         public IFormFile File { get; set; }
     }
 }
