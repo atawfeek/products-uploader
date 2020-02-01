@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MediatR;
 using System.Reflection;
+using Products.Api.Middleware;
 
 namespace Products.Api
 {
@@ -35,6 +36,9 @@ namespace Products.Api
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //register swagger.
+            services.ConfigureSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +55,10 @@ namespace Products.Api
             }
 
             app.UseHttpsRedirection();
+
+            //use swagger in middleware pipeline
+            app.ConfigureSwagger(env, Configuration.GetValue<bool>(StaticData.UseSwagger));
+
             app.UseMvc();
         }
     }
