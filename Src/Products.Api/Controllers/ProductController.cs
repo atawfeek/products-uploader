@@ -34,16 +34,16 @@ namespace Products.Api.Controllers
         [HttpPost]
         [Route("UploadSingleFile")]
         [ProducesResponseType(typeof(ProcessedFileInfoDto), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Post(IFormFile file, [FromServices] IHostingEnvironment env)
+        public async Task<IActionResult> Post([FromForm] InputFileDto inputFile, [FromServices] IHostingEnvironment env)
         {
             try
             {
                 // Full path to file in temp location
                 var filePath = Path.GetTempFileName();
 
-                if (file.Length > 0)
+                if (inputFile.File.Length > 0)
                     using (var stream = new FileStream(filePath, FileMode.Create))
-                        await file.CopyToAsync(stream);
+                        await inputFile.File.CopyToAsync(stream);
 
                 // Process uploaded file
 
