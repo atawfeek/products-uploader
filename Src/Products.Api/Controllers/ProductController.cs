@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -31,13 +32,22 @@ namespace Products.Api.Controllers
         }
 
         [HttpPost]
-        [Route("UploadFile")]
+        [Route("UploadSingleFile")]
         [ProducesResponseType(typeof(ProcessedFileInfoDto), (int)HttpStatusCode.OK)]
-        public IActionResult Upload(IFormFile file, [FromServices] IHostingEnvironment env)
+        public async Task<IActionResult> Post(IFormFile file, [FromServices] IHostingEnvironment env)
         {
             try
             {
-                return Ok("File is processed successfully");
+                // Full path to file in temp location
+                var filePath = Path.GetTempFileName();
+
+                if (file.Length > 0)
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                        await file.CopyToAsync(stream);
+
+                // Process uploaded file
+
+                return Ok(new { count = 1, path = filePath });
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,6 +11,6 @@ namespace Products.Dto.Dtos
     public class InputFileDto
     {
         public string FileName { get; set; }
-        public long FileSize { get; set; }
+        public IFormFile File { get; set; }
     }
 }
