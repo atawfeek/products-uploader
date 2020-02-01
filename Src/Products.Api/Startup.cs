@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MediatR;
+using System.Reflection;
 
 namespace Products.Api
 {
@@ -28,6 +30,9 @@ namespace Products.Api
         {
             //Register http context in DI container to be injected in constructors upnon need.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            //Register MediatR
+            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
