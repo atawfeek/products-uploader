@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Products.Api.Response;
+using Products.Commands;
 using Products.Dto.Dtos;
 using Products.Dto.Results;
 
@@ -34,20 +35,14 @@ namespace Products.Api.Controllers
         [HttpPost]
         [Route("UploadSingleFile")]
         [ProducesResponseType(typeof(ProcessedFileInfoDto), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Post([FromForm] InputFileDto inputFile, [FromServices] IHostingEnvironment env)
+        public async Task<IActionResult> Post([FromForm] UploadFileCommand.Command command, [FromServices] IHostingEnvironment env)
         {
             try
             {
-                // Full path to file in temp location
-                var filePath = Path.GetTempFileName();
+                // Process uploaded file in mediatr command handler.
+                var result = await Mediator.Send(command);
 
-                if (inputFile.File.Length > 0)
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                        await inputFile.File.CopyToAsync(stream);
-
-                // Process uploaded file
-
-                return Ok(new { count = 1, path = filePath });
+                return Ok(new { count = 1, path = result.Data });
             }
             catch (Exception ex)
             {
