@@ -3,6 +3,7 @@ using Products.Domain.ProcessedFile.Abstraction;
 using Products.Domain.ProcessedFile.Interfaces;
 using Products.Domain.SeedWork;
 using System;
+using System.IO;
 
 namespace Products.Domain.ProcessedFile.TextFile
 {
@@ -11,8 +12,13 @@ namespace Products.Domain.ProcessedFile.TextFile
         public TxtFileModel(IFormFile file, string name, Guid? id = null)
            : base(file, name, id)
         {
-            Validate();
             ExtractFileMetadata(this);
+            Validate();
+        }
+
+        public Stream ExtractContent()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
