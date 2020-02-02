@@ -12,7 +12,7 @@ namespace Products.Service.Models
         public byte[] Content { get; set; }
 
         [Display(Name = "File Name")]
-        public string UntrustedName { get; set; }
+        public string FileName { get; set; }
 
         [Display(Name = "Note")]
         public string Note { get; set; }

@@ -4,8 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Products.Api.AutoMapper;
+using Products.Domain.ProcessedFile.Interfaces.DomainService;
 using Products.Dto.Options;
 using Products.Service.Data;
+using Products.Service.DomainServices;
 using Products.Service.Interfaces;
 using Products.Service.Services;
 using System;
@@ -47,6 +49,7 @@ namespace Products.Api.Middleware
 
             //register services
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IFileDomainService, FileDomainService>();
 
             //register automapper
             services.AddSingleton(provider => new MapperConfiguration(cfg =>

@@ -10,6 +10,6 @@ namespace Products.Domain.ProcessedFile.Interfaces
         bool IsPermittedExtension(string uploadedFileName);
         bool IsNotEmptyContent(IFormFile file);
         bool IsNotExceedingSizeLimit(long fileSize);
-        bool IsProcessedAlready(string uploadedFileName);
+        bool IsProcessedAlready();
     }
 }
