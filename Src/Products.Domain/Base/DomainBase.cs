@@ -7,15 +7,17 @@ namespace Products.Domain.Base
 {
     public abstract class DomainBase : Entity
     {
-        public DomainBase(string name, int? id = null)
+        public DomainBase(string name, Guid? id = null)
         {
             if (id.HasValue)
-                Id = (int)id;
+                Id = (Guid)id;
+            else
+                Id = Guid.NewGuid();
             Name = name;
         }
 
         //Props
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
     }
 }
