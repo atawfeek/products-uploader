@@ -1,5 +1,13 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
+using Products.Domain.ProcessedFile.Abstraction;
+using Products.Domain.ProcessedFile.CsvFile;
+using Products.Domain.ProcessedFile.Interfaces;
+using Products.Domain.ProcessedFile.TextFile;
+using Products.Domain.SeedWork;
 using Products.Dto.Dtos;
+using Products.Dto.Enums;
+using Products.Dto.Extensions;
 using Products.Dto.Results;
 using System;
 using System.Collections.Generic;
@@ -37,11 +45,10 @@ namespace Products.Commands
 
                 try
                 {
-                    //Orchestrate to service
-                    var filePath = Path.GetTempFileName();  // Full path to file in temp location
-                    if (request.InputFile.File.Length > 0)
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                            await request.InputFile.File.CopyToAsync(stream);
+                    //Instantiate new domain model
+                    var fileDomainModel = InstantiateMembersModel(request.InputFile.File);
+
+                    
 
                     //....
                     //await _uploadFileService ...
@@ -65,6 +72,25 @@ namespace Products.Commands
                 }
 
                 return result;
+            }
+
+            private FileModelBase InstantiateMembersModel(IFormFile file)
+            {
+                //get extension
+                var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+                //instantiate proper model
+                SupportedFileTypeEnum csv = SupportedFileTypeEnum.Csv;
+                if (extension == EnumExtension.FileTypeExtensionString(SupportedFileTypeEnum.Csv))
+                    return new CsvFileModel(file, file.FileName);
+                if (extension == EnumExtension.FileTypeExtensionString(SupportedFileTypeEnum.Txt))
+                    return new TxtFileModel(file, file.FileName);
+
+                //Open for extensions!  SOLID
+
+                //one more condition handling for XmlFileModel
+
+                throw new BusinessRuleValidationException("unsupported file extension.");
             }
         }
     }

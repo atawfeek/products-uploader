@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Products.Domain.ProcessedFile.Interfaces
 {
-    interface IContent
+    public interface IContent
     {
-        void GetContent();
+        void SaveContent();
     }
 }

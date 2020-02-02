@@ -4,19 +4,19 @@ using Products.Domain.ProcessedFile.Interfaces;
 using Products.Domain.SeedWork;
 using System;
 
-namespace Products.Domain.ProcessedFile.CsvFile
+namespace Products.Domain.ProcessedFile.TextFile
 {
-    public class CsvFileModel : FileModelBase, IAggregateRoot, IContent
+    public class TxtFileModel : FileModelBase, IAggregateRoot, IContent
     {
-        public CsvFileModel(IFormFile file, string name, Guid? id = null)
+        public TxtFileModel(IFormFile file, string name, Guid? id = null)
            : base(file, name, id)
         {
-            ExtractFileMetadata(this);
             Validate();
+            ExtractFileMetadata(this);
         }
 
         /// <summary>
-        /// content is extracted according to file type
+        /// extract content based on file type
         /// </summary>
         public void SaveContent()
         {
