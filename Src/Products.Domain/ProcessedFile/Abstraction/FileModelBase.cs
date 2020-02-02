@@ -5,11 +5,12 @@ using Products.Domain.SeedWork;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Products.Domain.ProcessedFile.Abstraction
 {
-    public abstract class FileModelBase : DomainBase, IValidate, IPersist
+    public abstract class FileModelBase : DomainBase, IFile, IValidate, IPersist
     {
         public bool IsOnHold { get; set; }
         public DateTime ProcessedDate { get; private set; }    // internal accessibility only - data encapsulation
@@ -23,10 +24,14 @@ namespace Products.Domain.ProcessedFile.Abstraction
         /// </summary>
         private string[] permittedExtensions = { ".txt", ".csv" };
 
+        private readonly long _fileSizeLimit;
+
         public FileModelBase(IFormFile file, string name, Guid? id = null)
             : base(name, id)
         {
             File = file;
+
+            _fileSizeLimit = 2097152; //[to do] get from configurations
         }
 
         //force file validation to be implemented for any introduced file type like csv, txt, or xml.
@@ -44,13 +49,15 @@ namespace Products.Domain.ProcessedFile.Abstraction
             if (!IsNotExceedingSizeLimit(this.Size))
                 throw new BusinessRuleValidationException("File size exceeds the max limit.");
 
-            if (!IsProcessedAlready(this.FileName))
+            if (IsProcessedAlready(this.FileName))
                 throw new BusinessRuleValidationException("File is already processed and persisted in database.");
         }
 
         public virtual bool IsPermittedExtension(string uploadedFileName)
         {
-            throw new NotImplementedException();
+            var ext = Path.GetExtension(uploadedFileName).ToLowerInvariant();
+
+            return (string.IsNullOrEmpty(ext) || !permittedExtensions.Contains(ext)) ? false : true;
         }
 
         public void ExtractFileMetadata(FileModelBase fileModelBase)
@@ -62,17 +69,19 @@ namespace Products.Domain.ProcessedFile.Abstraction
 
         public virtual bool IsNotEmptyContent(IFormFile file)
         {
-            throw new NotImplementedException();
+            return file.Length > 0 ? true : false;
         }
 
         public virtual bool IsNotExceedingSizeLimit(long fileSize)
         {
-            throw new NotImplementedException();
+            return fileSize < _fileSizeLimit ? true : false;
         }
 
         public virtual bool IsProcessedAlready(string uploadedFileName)
         {
-            throw new NotImplementedException();
+            return false; //temporary
+            
+            //[to do] check against database using domain service fn.
         }
 
         public void Save()

@@ -9,7 +9,7 @@ namespace Products.Dto.Enums
     /// </summary>
     public enum SupportedFileTypeEnum
     {
-        Text = 1,
+        Txt = 1,
         Csv = 2,
         Xml = 3,
         
