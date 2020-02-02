@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="MediatR" Version="8.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -17,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Products.Commands\Products.Commands.csproj" />
     <ProjectReference Include="..\Products.Dto\Products.Dto.csproj" />
+    <ProjectReference Include="..\Products.Service\Products.Service.csproj" />
   </ItemGroup>
 
 </Project>

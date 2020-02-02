@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using MediatR;
 using System.Reflection;
 using Products.Api.Middleware;
+using Products.Dto.Options;
 
 namespace Products.Api
 {
@@ -38,11 +39,20 @@ namespace Products.Api
             var assembly = AppDomain.CurrentDomain.Load("Products.Commands");
             services.AddMediatR(assembly);
 
+            //register Mvc
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //register swagger.
             services.ConfigureSwagger();
+
+            //register middleware services
+            var appOptions = new ApplicationSettingsOptions();
+            Configuration.GetSection(StaticData.ApplicationSettings).Bind(appOptions);
+
+            services.ConfigureServices(Configuration, appOptions);
         }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
