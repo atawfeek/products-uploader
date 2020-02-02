@@ -88,5 +88,10 @@ namespace Products.Domain.ProcessedFile.Abstraction
         {
             throw new NotImplementedException();
         }
+
+        public void InsertFileRecord()
+        {
+            /* Track processed files in database */
+        }
     }
 }

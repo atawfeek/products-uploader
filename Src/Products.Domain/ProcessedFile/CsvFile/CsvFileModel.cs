@@ -3,6 +3,7 @@ using Products.Domain.ProcessedFile.Abstraction;
 using Products.Domain.ProcessedFile.Interfaces;
 using Products.Domain.SeedWork;
 using System;
+using System.IO;
 
 namespace Products.Domain.ProcessedFile.CsvFile
 {
@@ -13,6 +14,11 @@ namespace Products.Domain.ProcessedFile.CsvFile
         {
             ExtractFileMetadata(this);
             Validate();
+        }
+
+        public Stream ExtractContent()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

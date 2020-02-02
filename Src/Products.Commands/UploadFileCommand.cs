@@ -9,6 +9,7 @@ using Products.Dto.Dtos;
 using Products.Dto.Enums;
 using Products.Dto.Extensions;
 using Products.Dto.Results;
+using Products.Service.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,6 +40,11 @@ namespace Products.Commands
         /// </summary>
         public class Handler : IRequestHandler<Command, ApiResult>
         {
+            private readonly IProductService _productService;
+            public Handler(IProductService productService)
+            {
+                _productService = productService;
+            }
             public async Task<ApiResult> Handle(Command request, CancellationToken cancellationToken)
             {
                 var result = new ApiResult();
@@ -46,12 +52,9 @@ namespace Products.Commands
                 try
                 {
                     //Instantiate new domain model
-                    var fileDomainModel = InstantiateMembersModel(request.InputFile.File);
+                    var iFile = InstantiateMembersModel(request.InputFile.File);
 
-                    
-
-                    //....
-                    //await _uploadFileService ...
+                    await _productService.SaveFileMetadata(iFile);
 
                     result.Data = new Response
                     {
@@ -61,34 +64,28 @@ namespace Products.Commands
                 }
                 catch (Exception ex)
                 {
-                    result = new ApiResult
-                    {
-                        Exception = new ApiException
-                        {
+                    result = new ApiResult{
+                        Exception = new ApiException{
                             Method = nameof(UploadFileCommand),
-                            Error = $"Upload File to process products. {ex.Message}"
-                        }
+                            Error = $"Upload File to process products. {ex.Message}"}
                     };
                 }
 
                 return result;
             }
 
-            private FileModelBase InstantiateMembersModel(IFormFile file)
+            private IFile InstantiateMembersModel(IFormFile file)
             {
                 //get extension
                 var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
 
                 //instantiate proper model
-                SupportedFileTypeEnum csv = SupportedFileTypeEnum.Csv;
                 if (extension == EnumExtension.FileTypeExtensionString(SupportedFileTypeEnum.Csv))
                     return new CsvFileModel(file, file.FileName);
                 if (extension == EnumExtension.FileTypeExtensionString(SupportedFileTypeEnum.Txt))
                     return new TxtFileModel(file, file.FileName);
 
-                //Open for extensions!  SOLID
-
-                //one more condition handling for XmlFileModel
+                //Open for extensions!  SOLID    -  Ready to introduce XmlFileModel in future.
 
                 throw new BusinessRuleValidationException("unsupported file extension.");
             }
