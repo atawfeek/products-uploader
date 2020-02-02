@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Http;
 using Products.Domain.ProcessedFile.Abstraction;
 using Products.Domain.ProcessedFile.CsvFile;
 using Products.Domain.ProcessedFile.Interfaces;
+using Products.Domain.ProcessedFile.Interfaces.DomainService;
 using Products.Domain.ProcessedFile.TextFile;
 using Products.Domain.SeedWork;
 using Products.Dto.Dtos;
 using Products.Dto.Enums;
 using Products.Dto.Extensions;
 using Products.Dto.Results;
+using Products.Service.DomainServices;
 using Products.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -41,9 +43,11 @@ namespace Products.Commands
         public class Handler : IRequestHandler<Command, ApiResult>
         {
             private readonly IProductService _productService;
-            public Handler(IProductService productService)
+            private readonly IFileDomainService _fileDomainService;
+            public Handler(IProductService productService, IFileDomainService fileDomainService)
             {
                 _productService = productService;
+                _fileDomainService = fileDomainService;
             }
             public async Task<ApiResult> Handle(Command request, CancellationToken cancellationToken)
             {
@@ -81,9 +85,9 @@ namespace Products.Commands
 
                 //instantiate proper model
                 if (extension == EnumExtension.FileTypeExtensionString(SupportedFileTypeEnum.Csv))
-                    return new CsvFileModel(file, file.FileName);
+                    return new CsvFileModel(file, file.FileName, _fileDomainService);
                 if (extension == EnumExtension.FileTypeExtensionString(SupportedFileTypeEnum.Txt))
-                    return new TxtFileModel(file, file.FileName);
+                    return new TxtFileModel(file, file.FileName, _fileDomainService);
 
                 //Open for extensions!  SOLID    -  Ready to introduce XmlFileModel in future.
 

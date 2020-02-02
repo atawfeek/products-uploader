@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Products.Domain.Base;
 using Products.Domain.ProcessedFile.Interfaces;
+using Products.Domain.ProcessedFile.Interfaces.DomainService;
 using Products.Domain.SeedWork;
 using System;
 using System.Collections.Generic;
@@ -26,12 +27,16 @@ namespace Products.Domain.ProcessedFile.Abstraction
 
         private readonly long _fileSizeLimit;
 
-        public FileModelBase(IFormFile file, string name, Guid? id = null)
+        private readonly IFileDomainService _fileDomainService;
+
+        public FileModelBase(IFormFile file, string name, IFileDomainService fileDomainService, int? id = null)
             : base(name, id)
         {
             File = file;
 
             _fileSizeLimit = 2097152; //[to do] get from configurations
+
+            _fileDomainService = fileDomainService;
         }
 
         //force file validation to be implemented for any introduced file type like csv, txt, or xml.
@@ -49,7 +54,7 @@ namespace Products.Domain.ProcessedFile.Abstraction
             if (!IsNotExceedingSizeLimit(this.Size))
                 throw new BusinessRuleValidationException("File size exceeds the max limit.");
 
-            if (IsProcessedAlready(this.FileName))
+            if (IsProcessedAlready())
                 throw new BusinessRuleValidationException("File is already processed and persisted in database.");
         }
 
@@ -77,11 +82,9 @@ namespace Products.Domain.ProcessedFile.Abstraction
             return fileSize < _fileSizeLimit ? true : false;
         }
 
-        public virtual bool IsProcessedAlready(string uploadedFileName)
+        public virtual bool IsProcessedAlready()
         {
-            return false; //temporary
-            
-            //[to do] check against database using domain service fn.
+            return _fileDomainService.IsProcessedFile(this);
         }
 
         public void Save()
@@ -92,6 +95,8 @@ namespace Products.Domain.ProcessedFile.Abstraction
         public void InsertFileRecord()
         {
             /* Track processed files in database */
+
+            _fileDomainService.AddFile(this);
         }
     }
 }
