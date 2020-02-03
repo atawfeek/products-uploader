@@ -34,7 +34,7 @@ namespace Products.Service.DomainServices
         {
             var file = _mapper.Map<FileModelBase, AppFile>(model);
 
-            _context.File.Add(file);
+            _context.Files.Add(file);
         }
 
         public List<string> ExtractContent(IFormFile StoredFile)
@@ -52,7 +52,7 @@ namespace Products.Service.DomainServices
 
         public bool IsProcessedFile(FileModelBase model)
         {
-            return _context.File.Where(x => x.FileName == model.FileName).Any();
+            return _context.Files.Where(x => x.FileName == model.FileName).Any();
         }
 
         public async Task SaveFile(IFormFile File)

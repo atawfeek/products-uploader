@@ -15,11 +15,13 @@ namespace Products.Domain.ProcessedFile.TextFile
     {
         private readonly IFileDomainService _fileDomainService;
 
-        public TxtFileModel(IFormFile file, string name, IFileDomainService _fileDomainService, int? id = null)
-           : base(file, name, _fileDomainService, id)
+        public TxtFileModel(IFormFile file, string name, IFileDomainService fileDomainService, int? id = null)
+           : base(file, name, fileDomainService, id)
         {
             ExtractFileMetadata(this);
             Validate();
+
+            _fileDomainService = fileDomainService;
         }
 
         public async Task<List<string>> ExtractContentAsync()

@@ -11,9 +11,10 @@ namespace Products.Service.Data
     {
         public ProductsDbContext(DbContextOptions<ProductsDbContext> options)
             : base(options)
-    {
-    }
+        {
+        }
 
-    public DbSet<AppFile> File { get; set; }
-}
+        public DbSet<AppFile> Files { get; set; }
+        public DbSet<Product> Products { get; set; }
+    }
 }
