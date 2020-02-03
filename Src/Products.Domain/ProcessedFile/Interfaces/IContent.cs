@@ -9,6 +9,6 @@ namespace Products.Domain.ProcessedFile.Interfaces
     public interface IContent
     {
         void SaveContent();
-        Task<string> ExtractContentAsync();
+        Task<List<string>> ExtractContentAsync();
     }
 }

@@ -58,7 +58,9 @@ namespace Products.Commands
                     //Instantiate new domain model
                     var iFile = InstantiateMembersModel(request.InputFile.File);
 
-                    await _productService.SaveFileMetadata(iFile);
+                    await _productService.SaveFile(iFile);
+
+                    await _productService.ExtractFileContent(iFile);
 
                     result.Data = new Response
                     {

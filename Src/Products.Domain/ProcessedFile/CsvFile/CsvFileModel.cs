@@ -4,6 +4,7 @@ using Products.Domain.ProcessedFile.Interfaces;
 using Products.Domain.ProcessedFile.Interfaces.DomainService;
 using Products.Domain.SeedWork;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -13,16 +14,18 @@ namespace Products.Domain.ProcessedFile.CsvFile
     {
         private readonly IFileDomainService _fileDomainService;
 
-        public CsvFileModel(IFormFile file, string name, IFileDomainService _fileDomainService, int? id = null)
-           : base(file, name, _fileDomainService, id)
+        public CsvFileModel(IFormFile file, string name, IFileDomainService fileDomainService, int? id = null)
+           : base(file, name, fileDomainService, id)
         {
             ExtractFileMetadata(this);
             Validate();
+
+            _fileDomainService = fileDomainService;
         }
 
-        public Task<string> ExtractContentAsync()
+        public Task<List<string>> ExtractContentAsync()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_fileDomainService.ExtractContent(File));
         }
 
         /// <summary>

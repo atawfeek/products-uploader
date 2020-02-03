@@ -8,6 +8,7 @@ using Products.Service.Data;
 using Products.Service.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,19 @@ namespace Products.Service.DomainServices
             var file = _mapper.Map<FileModelBase, AppFile>(model);
 
             _context.File.Add(file);
+        }
+
+        public List<string> ExtractContent(IFormFile StoredFile)
+        {
+            string filePath = $"{_targetPath}\\{StoredFile.FileName}";
+            var reader = new StreamReader(File.OpenRead(filePath));
+            List<string> searchList = new List<string>();
+            while (!reader.EndOfStream)
+            {
+                var line = reader.ReadLine();
+                searchList.Add(line);
+            }
+            return searchList;
         }
 
         public bool IsProcessedFile(FileModelBase model)

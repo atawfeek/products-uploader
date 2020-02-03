@@ -16,7 +16,7 @@ namespace Products.Service.Services
         {
             _dbContext = dbContext;
         }
-        public async Task<bool> SaveFileMetadata(IFile file)
+        public async Task<bool> SaveFile(IFile file)
         {
             var persisterter = file as IPersist;
             if (persisterter != null)
@@ -30,18 +30,19 @@ namespace Products.Service.Services
             return true;
         }
 
-        public async Task<bool> ExtractFileContent(IFile file)
+        public async Task<List<string>> ExtractFileContent(IFile file)
         {
 
             /* dynamic execution of the proper content extraction implementation based on file type */
+            List<string> searchList = new List<string>();
 
             var isContentImplementer = file as IContent;
             if (isContentImplementer != null)
-                await isContentImplementer.ExtractContentAsync();
+                searchList = await isContentImplementer.ExtractContentAsync();
 
             await _dbContext.SaveChangesAsync();
 
-            return true;
+            return searchList;
         }
     }
 }

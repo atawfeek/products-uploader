@@ -8,6 +8,7 @@ namespace Products.Service.Interfaces
 {
     public interface IProductService
     {
-        Task<bool> SaveFileMetadata(IFile file);
+        Task<bool> SaveFile(IFile file);
+        Task<List<string>> ExtractFileContent(IFile file);
     }
 }
