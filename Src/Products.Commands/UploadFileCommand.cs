@@ -62,6 +62,11 @@ namespace Products.Commands
 
                     await _productService.ExtractFileContent(iFile);
 
+                    
+                    //start processing file content to persist it in required storage
+                    // to do...
+
+
                     result.Data = new Response
                     {
                         Success = true,
