@@ -45,6 +45,9 @@ namespace Products.Api
             //register swagger.
             services.ConfigureSwagger();
 
+            //register options
+            services.ConfigureOptions(Configuration);
+
             //register middleware services
             var appOptions = new ApplicationSettingsOptions();
             Configuration.GetSection(StaticData.ApplicationSettings).Bind(appOptions);

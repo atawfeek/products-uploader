@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Products.Domain.ProcessedFile.Interfaces
 {
-    interface IPersist
+    public interface IPersist
     {
-        void Save();
+        Task SaveFilePhysically();
     }
 }

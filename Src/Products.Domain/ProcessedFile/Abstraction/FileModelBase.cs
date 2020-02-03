@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Products.Domain.ProcessedFile.Abstraction
 {
@@ -87,9 +88,9 @@ namespace Products.Domain.ProcessedFile.Abstraction
             return _fileDomainService.IsProcessedFile(this);
         }
 
-        public void Save()
+        public async Task SaveFilePhysically()
         {
-            throw new NotImplementedException();
+            await _fileDomainService.SaveFile(File);
         }
 
         public void InsertFileRecord()

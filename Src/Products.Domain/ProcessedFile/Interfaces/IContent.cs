@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Products.Domain.ProcessedFile.Interfaces
 {
     public interface IContent
     {
         void SaveContent();
-        Stream ExtractContent();
+        Task<string> ExtractContentAsync();
     }
 }

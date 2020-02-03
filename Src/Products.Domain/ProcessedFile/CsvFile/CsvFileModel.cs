@@ -5,6 +5,7 @@ using Products.Domain.ProcessedFile.Interfaces.DomainService;
 using Products.Domain.SeedWork;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Products.Domain.ProcessedFile.CsvFile
 {
@@ -19,7 +20,7 @@ namespace Products.Domain.ProcessedFile.CsvFile
             Validate();
         }
 
-        public Stream ExtractContent()
+        public Task<string> ExtractContentAsync()
         {
             throw new NotImplementedException();
         }
