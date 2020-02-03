@@ -18,6 +18,10 @@ namespace Products.Service.Services
         }
         public async Task<bool> SaveFileMetadata(IFile file)
         {
+            var persisterter = file as IPersist;
+            if (persisterter != null)
+                await persisterter.SaveFilePhysically();
+
             if (file != null)
                 file.InsertFileRecord();
 
@@ -33,7 +37,7 @@ namespace Products.Service.Services
 
             var isContentImplementer = file as IContent;
             if (isContentImplementer != null)
-                isContentImplementer.ExtractContent();
+                await isContentImplementer.ExtractContentAsync();
 
             await _dbContext.SaveChangesAsync();
 

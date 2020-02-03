@@ -5,6 +5,8 @@ using Products.Domain.ProcessedFile.Interfaces.DomainService;
 using Products.Domain.SeedWork;
 using System;
 using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Products.Domain.ProcessedFile.TextFile
 {
@@ -19,9 +21,15 @@ namespace Products.Domain.ProcessedFile.TextFile
             Validate();
         }
 
-        public Stream ExtractContent()
+        public async Task<string> ExtractContentAsync()
         {
-            throw new NotImplementedException();
+            var result = new StringBuilder();
+            using (var reader = new StreamReader(File.OpenReadStream()))
+            {
+                while (reader.Peek() >= 0)
+                    result.AppendLine(await reader.ReadLineAsync());
+            }
+            return result.ToString();
         }
 
         /// <summary>
