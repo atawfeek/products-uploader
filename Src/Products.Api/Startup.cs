@@ -15,6 +15,9 @@ using MediatR;
 using System.Reflection;
 using Products.Api.Middleware;
 using Products.Dto.Options;
+using Products.Service.Interfaces.MultipleImplementation;
+using Products.Service.Services;
+using Products.Service.Interfaces;
 
 namespace Products.Api
 {
@@ -38,6 +41,25 @@ namespace Products.Api
             //Register MediatR handler(s) located in our specific project
             var assembly = AppDomain.CurrentDomain.Load("Products.Commands");
             services.AddMediatR(assembly);
+
+            //register product storages considering multiple implementations
+            services.AddScoped<IProductStorageRepository, ProductStorageRepository>();
+
+            services.AddSingleton<ProductDbStorage>();
+            services.AddSingleton<ProductJsonStorage>();
+
+            services.AddTransient<Func<string, IProductStorage>>(serviceProvider => key =>
+            {
+                switch (key)
+                {
+                    case "DB":
+                        return serviceProvider.GetService<ProductDbStorage>();
+                    case "JSON":
+                        return serviceProvider.GetService<ProductJsonStorage>();
+                    default:
+                        return serviceProvider.GetService<ProductDbStorage>();
+                }
+            });
 
             //register Mvc
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
