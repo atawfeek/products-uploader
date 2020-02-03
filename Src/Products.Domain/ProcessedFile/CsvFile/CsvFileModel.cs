@@ -4,6 +4,7 @@ using Products.Domain.ProcessedFile.Interfaces;
 using Products.Domain.ProcessedFile.Interfaces.DomainService;
 using Products.Domain.SeedWork;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -20,9 +21,9 @@ namespace Products.Domain.ProcessedFile.CsvFile
             Validate();
         }
 
-        public Task<string> ExtractContentAsync()
+        public Task<List<string>> ExtractContentAsync()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_fileDomainService.ExtractContent(File));
         }
 
         /// <summary>

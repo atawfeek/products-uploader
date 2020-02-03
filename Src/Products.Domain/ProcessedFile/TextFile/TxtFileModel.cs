@@ -4,6 +4,7 @@ using Products.Domain.ProcessedFile.Interfaces;
 using Products.Domain.ProcessedFile.Interfaces.DomainService;
 using Products.Domain.SeedWork;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace Products.Domain.ProcessedFile.TextFile
             Validate();
         }
 
-        public async Task<string> ExtractContentAsync()
+        public async Task<List<string>> ExtractContentAsync()
         {
             var result = new StringBuilder();
             using (var reader = new StreamReader(File.OpenReadStream()))
@@ -29,7 +30,10 @@ namespace Products.Domain.ProcessedFile.TextFile
                 while (reader.Peek() >= 0)
                     result.AppendLine(await reader.ReadLineAsync());
             }
-            return result.ToString();
+
+            List<string> searchList = new List<string>();
+            searchList.Add(result.ToString());
+            return searchList;
         }
 
         /// <summary>

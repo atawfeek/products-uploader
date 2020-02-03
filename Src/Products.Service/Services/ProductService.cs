@@ -16,7 +16,7 @@ namespace Products.Service.Services
         {
             _dbContext = dbContext;
         }
-        public async Task<bool> SaveFileMetadata(IFile file)
+        public async Task<bool> SaveFile(IFile file)
         {
             var persisterter = file as IPersist;
             if (persisterter != null)
