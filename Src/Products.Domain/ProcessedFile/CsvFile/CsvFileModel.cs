@@ -14,11 +14,13 @@ namespace Products.Domain.ProcessedFile.CsvFile
     {
         private readonly IFileDomainService _fileDomainService;
 
-        public CsvFileModel(IFormFile file, string name, IFileDomainService _fileDomainService, int? id = null)
-           : base(file, name, _fileDomainService, id)
+        public CsvFileModel(IFormFile file, string name, IFileDomainService fileDomainService, int? id = null)
+           : base(file, name, fileDomainService, id)
         {
             ExtractFileMetadata(this);
             Validate();
+
+            _fileDomainService = fileDomainService;
         }
 
         public Task<List<string>> ExtractContentAsync()

@@ -9,6 +9,6 @@ namespace Products.Service.Interfaces
     public interface IProductService
     {
         Task<bool> SaveFile(IFile file);
-        Task<bool> ExtractFileContent(IFile file);
+        Task<List<string>> ExtractFileContent(IFile file);
     }
 }
