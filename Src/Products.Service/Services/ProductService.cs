@@ -1,4 +1,5 @@
-﻿using Products.Domain.ProcessedFile.CsvFile;
+﻿using Products.Domain;
+using Products.Domain.ProcessedFile.CsvFile;
 using Products.Domain.ProcessedFile.Interfaces;
 using Products.Service.Data;
 using Products.Service.Interfaces;
@@ -30,19 +31,19 @@ namespace Products.Service.Services
             return true;
         }
 
-        public async Task<List<string>> ExtractFileContent(IFile file)
+        public async Task<List<ProductDomain>> ExtractFileContent(IFile file)
         {
 
             /* dynamic execution of the proper content extraction implementation based on file type */
-            List<string> searchList = new List<string>();
+            var products = new List<ProductDomain>();
 
             var isContentImplementer = file as IContent;
             if (isContentImplementer != null)
-                searchList = await isContentImplementer.ExtractContentAsync();
+                products = await isContentImplementer.ExtractContentAsync();
 
             await _dbContext.SaveChangesAsync();
 
-            return searchList;
+            return products;
         }
     }
 }

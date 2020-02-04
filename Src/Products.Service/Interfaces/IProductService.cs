@@ -1,4 +1,5 @@
-﻿using Products.Domain.ProcessedFile.Interfaces;
+﻿using Products.Domain;
+using Products.Domain.ProcessedFile.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,6 @@ namespace Products.Service.Interfaces
     public interface IProductService
     {
         Task<bool> SaveFile(IFile file);
-        Task<List<string>> ExtractFileContent(IFile file);
+        Task<List<ProductDomain>> ExtractFileContent(IFile file);
     }
 }

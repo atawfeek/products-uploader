@@ -12,6 +12,6 @@ namespace Products.Domain.ProcessedFile.Interfaces.DomainService
         bool IsProcessedFile(FileModelBase model);
         void AddFile(FileModelBase model);
         Task SaveFile(IFormFile File);
-        List<string> ExtractContent(IFormFile File);
+        Task<List<ProductDomain>> ExtractContentAsync(IFormFile File);
     }
 }

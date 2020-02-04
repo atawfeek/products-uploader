@@ -23,9 +23,9 @@ namespace Products.Domain.ProcessedFile.CsvFile
             _fileDomainService = fileDomainService;
         }
 
-        public Task<List<string>> ExtractContentAsync()
+        public async Task<List<ProductDomain>> ExtractContentAsync()
         {
-            return Task.FromResult(_fileDomainService.ExtractContent(File));
+            return await _fileDomainService.ExtractContentAsync(File);
         }
 
         /// <summary>

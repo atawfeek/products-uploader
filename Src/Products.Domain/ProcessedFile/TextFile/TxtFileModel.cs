@@ -24,7 +24,7 @@ namespace Products.Domain.ProcessedFile.TextFile
             _fileDomainService = fileDomainService;
         }
 
-        public async Task<List<string>> ExtractContentAsync()
+        public async Task<List<ProductDomain>> ExtractContentAsync()
         {
             var result = new StringBuilder();
             using (var reader = new StreamReader(File.OpenReadStream()))
@@ -33,9 +33,7 @@ namespace Products.Domain.ProcessedFile.TextFile
                     result.AppendLine(await reader.ReadLineAsync());
             }
 
-            List<string> searchList = new List<string>();
-            searchList.Add(result.ToString());
-            return searchList;
+            return new List<ProductDomain>();   //to do : extract result object as List of ProductDomain
         }
 
         /// <summary>

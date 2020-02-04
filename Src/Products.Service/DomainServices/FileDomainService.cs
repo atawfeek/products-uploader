@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Products.Domain;
 using Products.Domain.ProcessedFile.Abstraction;
 using Products.Domain.ProcessedFile.Interfaces.DomainService;
 using Products.Dto.Options;
@@ -20,6 +21,7 @@ namespace Products.Service.DomainServices
         private readonly ProductsDbContext _context;
         private readonly IMapper _mapper;
         private readonly string _targetPath;
+
         public FileDomainService(ProductsDbContext context,
                                     IMapper mapper,
                                     IOptions<ApplicationSettingsOptions> applicationSettingsOptions)
@@ -37,17 +39,42 @@ namespace Products.Service.DomainServices
             _context.Files.Add(file);
         }
 
-        public List<string> ExtractContent(IFormFile StoredFile)
+        public async Task<List<ProductDomain>> ExtractContentAsync(IFormFile StoredFile)
         {
             string filePath = $"{_targetPath}\\{StoredFile.FileName}";
-            var reader = new StreamReader(File.OpenRead(filePath));
-            List<string> searchList = new List<string>();
-            while (!reader.EndOfStream)
+
+            var lines = await FileEx.ReadAllLinesAsync(filePath);
+            //skip header
+            lines.RemoveAt(0);
+
+            List<ProductDomain> products = new List<ProductDomain>();
+            
+            lines.ForEach(x => products.Add(FromCsv(x)));
+
+            return products;
+        }
+
+        private static ProductDomain FromCsv(string csvLine)
+        {
+            ProductDomain productValues = new ProductDomain();
+
+            try
             {
-                var line = reader.ReadLine();
-                searchList.Add(line);
+                string[] values = csvLine.Split(',');
+                productValues.Key = Convert.ToString(values[0]);
+                productValues.ArtikelCode = Convert.ToInt32(values[1]);
+                productValues.ColorCode = Convert.ToString(values[2]);
+                productValues.Description = Convert.ToString(values[3]);
+                productValues.Price = Convert.ToInt32(values[4]);
+                productValues.DiscountPrice = Convert.ToInt32(values[5]);
+                productValues.DeliveredIn = Convert.ToString(values[6]);
+                productValues.TargetAge = Convert.ToString(values[7]);
+                productValues.Size = Convert.ToInt32(values[8]);
+                productValues.Color = Convert.ToString(values[9]);
             }
-            return searchList;
+            catch { }
+
+            return productValues;
         }
 
         public bool IsProcessedFile(FileModelBase model)
