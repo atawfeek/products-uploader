@@ -12,6 +12,6 @@ namespace Products.Service.Interfaces.MultipleImplementation
     /// </summary>
     public interface IProductStorageRepository
     {
-        Task<bool> StorePatchProducts(IList<Product> product);
+        Task<bool> StorePatchProducts(IList<Product> product, ProductSourceEnum storeType);
     }
 }

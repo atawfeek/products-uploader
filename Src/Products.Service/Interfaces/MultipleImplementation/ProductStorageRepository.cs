@@ -19,9 +19,9 @@ namespace Products.Service.Interfaces.MultipleImplementation
             this.productStorage = productStorage;
         }
 
-        public Task<bool> StorePatchProducts(IList<Product> products)
+        public Task<bool> StorePatchProducts(IList<Product> products, ProductSourceEnum storeType)
         {
-            return productStorage(ProductSourceEnum.DB.ToString()).StorePatchProducts(products);
+            return productStorage(storeType.ToString()).StorePatchProducts(products);
         }
     }
 }
