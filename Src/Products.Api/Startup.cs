@@ -45,10 +45,10 @@ namespace Products.Api
             //register product storages considering multiple implementations
             services.AddScoped<IProductStorageRepository, ProductStorageRepository>();
 
-            services.AddSingleton<ProductDbStorage>();
-            services.AddSingleton<ProductJsonStorage>();
+            services.AddScoped<ProductDbStorage>();
+            services.AddScoped<ProductJsonStorage>();
 
-            services.AddTransient<Func<string, IProductStorage>>(serviceProvider => key =>
+            services.AddScoped<Func<string, IProductStorage>>(serviceProvider => key =>
             {
                 switch (key)
                 {

@@ -10,7 +10,7 @@ namespace Products.Service.Interfaces
     public interface IProductStorage
     {
         Task<bool> StoreProduct(Product product);
-        Task<bool> StorePatchProducts(IList<Product> product);
+        Task StorePatchProducts(IList<Product> products);
         Task<bool> ProductExist(int Id);
         Task<Product> Get(int Id);
         Task<List<Product>> GetAll();

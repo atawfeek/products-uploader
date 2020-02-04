@@ -12,6 +12,7 @@ using Products.Dto.Extensions;
 using Products.Dto.Results;
 using Products.Service.DomainServices;
 using Products.Service.Interfaces;
+using Products.Service.Interfaces.MultipleImplementation;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -58,13 +59,17 @@ namespace Products.Commands
                     //Instantiate new domain model
                     var iFile = InstantiateMembersModel(request.InputFile.File);
 
+                    //save file physically to avoid processing i nmemoey
                     await _productService.SaveFile(iFile);
 
-                    await _productService.ExtractFileContent(iFile);
+                    //start processing the saved file content to be prepared for different required storages..
+                    var products = await _productService.ExtractFileContent(iFile);
 
-                    
-                    //start processing file content to persist it in required storage
-                    // to do...
+                    //persist products in database.
+                    await _productService.StoreProductsAsync(products, ProductSourceEnum.DB);
+
+                    //persist products in json.
+                    await _productService.StoreProductsAsync(products, ProductSourceEnum.JSON);
 
 
                     result.Data = new Response
