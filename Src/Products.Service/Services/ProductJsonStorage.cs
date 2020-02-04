@@ -1,4 +1,6 @@
-﻿using Products.Service.Interfaces;
+﻿using Microsoft.Extensions.Options;
+using Products.Dto.Options;
+using Products.Service.Interfaces;
 using Products.Service.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,12 @@ namespace Products.Service.Services
 {
     public class ProductJsonStorage : IProductStorage
     {
+        private readonly string _targetPath;
+        public ProductJsonStorage(IOptions<ApplicationSettingsOptions> applicationSettingsOptions)
+        {
+            _targetPath = applicationSettingsOptions.Value.StoredFilesPath;
+        }
+
         public Task<Product> Get(int Id)
         {
             throw new NotImplementedException();
@@ -24,7 +32,7 @@ namespace Products.Service.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> StorePatchProducts(IList<Product> product)
+        public Task StorePatchProducts(IList<Product> products)
         {
             throw new NotImplementedException();
         }

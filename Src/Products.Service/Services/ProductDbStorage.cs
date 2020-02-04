@@ -1,4 +1,5 @@
-﻿using Products.Service.Interfaces;
+﻿using Products.Service.Data;
+using Products.Service.Interfaces;
 using Products.Service.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,12 @@ namespace Products.Service.Services
 {
     public class ProductDbStorage : IProductStorage
     {
+        private readonly ProductsDbContext _dbContext;
+        public ProductDbStorage(ProductsDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public Task<Product> Get(int Id)
         {
             throw new NotImplementedException();
@@ -24,9 +31,9 @@ namespace Products.Service.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> StorePatchProducts(IList<Product> product)
+        public async Task StorePatchProducts(IList<Product> products)
         {
-            throw new NotImplementedException();
+            await _dbContext.Products.AddRangeAsync(products);
         }
 
         public Task<bool> StoreProduct(Product product)
