@@ -2,3 +2,38 @@
 
 
 IRECKONU mini web app to upload product items in batches to storage.
+
+##### basic requirements:
+Backend - C# .NET Core web API
+1.          Import the file via web API, expect the file to be very large in production
+2.          Transform the data into a logical model
+3.          Store the data (two locations - a Database and JSON file)
+o   Database (can be either MS SQL or MongoDB - you choose)
+o   JSON file on the disk
+Data: Sample File: https://goo.gl/tJWo1f
+
+##### Key Design Points:
+1. using CQRS pattern to differentiate between storing and retrieving data processes.  (probably not mandatory now given the app requirements, however in case app will display imported products so better to follow this pattern to avoid reading data being impacted with files processing)
+2. Clean architecture is followed to have domain layer in the heart of the implementation for business isolation decoupled from UI or repository changes.
+3. dynamic saving and extracting content based on input file using interfaces
+4. swagger support
+5. Consideration of large file processing, accordingly avoding processing files in memory to not block the request, and instead saving the file on physical storage then process it locally.
+
+##### How to use:
+1. Clone and open solution in VS 2019
+2. Open appsettings and change the default path to yours. "StoredFilesPath": "c:\\files"
+3. Launch the application to open swagger UI page showing our Api.
+4. Use Postman or any API invoker like Fiddler to invoke our Api
+
+![csv input file](invoke-api-csv.JPG)
+
+![text input file](invoke-api-text.JPG)
+
+
+##### Incomplete Definition Of Done (DoD):
+1. Unit tests using mocking library, integration tests using real db.
+2. missing final consumption of storages
+
+
+##### Wish List:
+1. Use domain events by IMediatR notification to raise event NewFileUploaded to be processed by different storage providers simultaneously instead of sequential flow.
