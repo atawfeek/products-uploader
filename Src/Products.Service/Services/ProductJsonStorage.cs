@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Products.Dto.Options;
 using Products.Service.Interfaces;
 using Products.Service.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,9 +34,13 @@ namespace Products.Service.Services
             throw new NotImplementedException();
         }
 
-        public Task StorePatchProducts(IList<Product> products)
+        public async Task StorePatchProducts(IList<Product> products)
         {
-            throw new NotImplementedException();
+            //convert list of object to json
+            string sJSONResponse = JsonConvert.SerializeObject(products);
+
+            //write to json file
+            await File.WriteAllTextAsync(_targetPath + "\\output.json", sJSONResponse);
         }
 
         public Task<bool> StoreProduct(Product product)
