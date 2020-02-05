@@ -21,6 +21,7 @@ Data: Sample File: https://goo.gl/tJWo1f
 6. auto mapper library is used to automatically map between models of different layers following separation of concerns.
 7. Dependency injection container is used to use interfaces for dependencies control and single responsibility of object instantiating and management during request life cycle.
 8. Mocing framework is used for unit testing.
+9. application uses In-Memory databse to avoid prerequisites of database setup, however when it needs production, or pilot, then change UseInMemoryDatabase to UseSqlServer in order to use real db
 
 ##### How to use:
 1. Clone 'development' repository then open solution in VS 2019
