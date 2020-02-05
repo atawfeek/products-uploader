@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Products.Domain.ProcessedFile.Interfaces
 {
-    interface IValidate
+    public interface IValidate
     {
         bool IsPermittedExtension(string uploadedFileName);
         bool IsNotEmptyContent(IFormFile file);
