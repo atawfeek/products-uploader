@@ -59,18 +59,18 @@ namespace Products.Commands
                     //Instantiate new domain model
                     var iFile = InstantiateMembersModel(request.InputFile.File);
 
-                    //save file physically to avoid processing i nmemoey
                     await _productService.SaveFile(iFile);
+                    Console.WriteLine("Finish saving file..");
 
                     //start processing the saved file content to be prepared for different required storages..
                     var products = await _productService.ExtractFileContent(iFile);
+                    Console.WriteLine("Finish processing file and extracting content ..");
 
-                    //persist products in database.
-                    await _productService.StoreProductsAsync(products, ProductSourceEnum.DB);
+                    var dbProcess = _productService.StoreProductsAsync(products, ProductSourceEnum.DB);
+                    var jsonProcess = _productService.StoreProductsAsync(products, ProductSourceEnum.DB);
 
-                    //persist products in json.
-                    await _productService.StoreProductsAsync(products, ProductSourceEnum.JSON);
-
+                    await Task.WhenAll(dbProcess , jsonProcess);
+                    Console.WriteLine($"Finish storing content in {ProductSourceEnum.DB} and {ProductSourceEnum.JSON} ..");
 
                     result.Data = new Response
                     {

@@ -27,6 +27,9 @@ namespace Products.Service.Services
         }
         public async Task<bool> SaveFile(IFile file)
         {
+            //save file physically to avoid processing i nmemoey
+            Console.WriteLine("Begin saving file..");
+
             var persisterter = file as IPersist;
             if (persisterter != null)
                 await persisterter.SaveFilePhysically();
@@ -41,7 +44,7 @@ namespace Products.Service.Services
 
         public async Task<List<ProductDomain>> ExtractFileContent(IFile file)
         {
-
+            Console.WriteLine("Start extracting content from saved file..");
             /* dynamic execution of the proper content extraction implementation based on file type */
             var products = new List<ProductDomain>();
 
@@ -56,6 +59,8 @@ namespace Products.Service.Services
 
         public async Task StoreProductsAsync(List<ProductDomain> products, ProductSourceEnum storageType)
         {
+            Console.WriteLine($"Start processing content for {storageType} storage ..");
+
             /* auto mapper to convert domain model to the service model */
             var convertedProducts = _mapper.Map<List<ProductDomain>, List<Models.Product>>(products);
 
