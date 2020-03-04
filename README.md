@@ -1,7 +1,7 @@
-# ireckonu-products-uploader
+# products-uploader
 
 
-IRECKONU mini web app to upload product items in batches to storage.
+mini web app to upload product items in batches to storage.
 
 ##### basic requirements:
 Backend - C# .NET Core web API
